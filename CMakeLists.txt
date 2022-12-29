@@ -11,6 +11,8 @@ SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules)
 
 PROJECT(RapidJSON CXX)
 
+include(GNUInstallDirs)
+
 set(LIB_MAJOR_VERSION "1")
 set(LIB_MINOR_VERSION "1")
 set(LIB_PATCH_VERSION "0")
@@ -93,16 +95,13 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 endif()
 
 #add extra search paths for libraries and includes
-SET(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include" CACHE PATH "The directory the headers are installed in")
-SET(LIB_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/lib" CACHE STRING "Directory where lib will install")
-SET(DOC_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/doc/${PROJECT_NAME}" CACHE PATH "Path to the documentation")
-
-IF(UNIX OR CYGWIN)
-    SET(_CMAKE_INSTALL_DIR "${LIB_INSTALL_DIR}/cmake/${PROJECT_NAME}")
-ELSEIF(WIN32)
-    SET(_CMAKE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/cmake")
-ENDIF()
-SET(CMAKE_INSTALL_DIR "${_CMAKE_INSTALL_DIR}" CACHE PATH "The directory cmake fiels are installed in")
+SET(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}" CACHE PATH "The directory the headers are installed in")
+SET(LIB_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}" CACHE STRING "Directory where lib will install")
+SET(DOC_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/doc/${PROJECT_NAME}" CACHE PATH "Path to the documentation")
+if(NOT DEFINED XP_INSTALL_CMAKEDIR)
+  set(XP_INSTALL_CMAKEDIR ${CMAKE_INSTALL_DATADIR}/cmake)
+endif()
+SET(CMAKE_INSTALL_DIR "${XP_INSTALL_CMAKEDIR}" CACHE PATH "The directory cmake files are installed in")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
